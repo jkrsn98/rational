@@ -1,44 +1,53 @@
 #include "Rational.h"
 #include "gcd.h"
+#include "rational_exception.h"
 
-//---------------
-//constructors
-//---------------
-Rational::Rational():num(0), denom(0){}
-Rational::Rational(int num):num(num), denom(1){}
+//------------------------------------------------------------------------------
+//constructor:
 Rational::Rational(int num, int denom):num(num),denom(denom){
+  if(denom==0) {
+    RationalException r("RationalException: can't instantiate Rational with denom 0");
+    std::cout<<r.getWhat()<<endl;
+    throw r;
+  }
   int gcdx = gcd(this->num,this->denom);
   this->num=num/gcdx;
   this->denom=denom/gcdx;
 }
-
-
 //------------------------------------------------------------------------------
-//add & addInPlace :
+//------------------------------------------------------------------------------
+//getters:
+int Rational::getNumerator() const {return num;}
+int Rational::getDenominator() const {return denom;}
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//add & addInPlace:
 Rational Rational::add(const Rational &a) const{
   return Rational(num * a.denom + a.num * denom, denom * a.denom);
 }
 Rational& Rational::addInPlace(const Rational &a){
-  this->num = this->num*a.denom + a.num*this->denom;
-  this->denom = this->denom * a.denom;
+  int newNum = this->num*a.denom + a.num*this->denom;
+  int newDenom = this->denom * a.denom;
+  this->num = newNum/gcd(newNum,newDenom);
+  this->denom = newDenom/gcd(newNum,newDenom);
   return *this;
 }
-
-
 //------------------------------------------------------------------------------
-//sub & subInPlace :
+//------------------------------------------------------------------------------
+//sub & subInPlace:
 Rational Rational::sub(const Rational &a) const{
   return Rational(num * a.denom - a.num * denom, denom * a.denom);
 }
 Rational& Rational::subInPlace(const Rational &a){
-  this->num = this->num*a.denom - a.num*this->denom;
-  this->denom = this->denom * a.denom;
+  int newNum = this->num*a.denom - a.num*this->denom;
+  int newDenom = this->denom * a.denom;
+  this->num = newNum/gcd(newNum,newDenom);
+  this->denom = newDenom/gcd(newNum,newDenom);
   return *this;
 }
-
-
 //------------------------------------------------------------------------------
-//mul & mulInPlace :
+//------------------------------------------------------------------------------
+//mul & mulInPlace:
 Rational Rational::mul(const Rational &r) const{
   return Rational( this->num * (r.num), this->denom * (r.denom) );
 }
@@ -48,7 +57,8 @@ Rational& Rational::mulInPlace(const Rational &r){
   return *this;
 }
 //------------------------------------------------------------------------------
-//div & divInPlace :
+//------------------------------------------------------------------------------
+//div & divInPlace:
 Rational Rational::div(const Rational &r) const{
   return Rational( this->num / (r.num), this->denom / (r.denom) );
 }
@@ -58,8 +68,41 @@ Rational& Rational::divInPlace(const Rational &r){
   return *this;
 }
 //------------------------------------------------------------------------------
-
-//etcetera
 //------------------------------------------------------------------------------
-void Rational::print(std::ostream &os) const{std::cout<<this->num<<"/"<<this->denom;}
-//Rational neg() const;
+//else:
+Rational Rational::neg() const{
+  Rational r(-1*num,denom);
+  return r;
+}
+
+Rational Rational::inv() const{
+  if(num==0) {
+    RationalException r("RationalException: can't instantiate Rational with denom 0");
+    std::cout<<r.getWhat()<<endl;
+    throw r;
+  }
+  int newNum=denom;
+  int newDenom=num;
+  Rational r(newNum,newDenom);
+  return r;
+}
+
+bool Rational::equals(const Rational &r) const{
+  double x = (float) (this->num) / (float) (this->denom);
+  double y = (float) (r.num) / (float) (r.denom);
+  return (x==y)? true: false;
+}
+
+int Rational::compareTo(const Rational &r) const{
+  double x = (float) (this->num) / (float) (this->denom);
+  double y = (float) (r.num) / (float) (r.denom);
+  if(x>y) return 1;
+  if(x<y) return -1;
+  if(x==y) return 0;
+}
+//------------------------------------------------------------------------------
+
+void Rational::print(std::ostream &os) const{
+  if(this->denom!=1) os<<this->num<<"/"<<this->denom;
+  else os<<this->num;
+}

@@ -3,11 +3,9 @@
 #include <iostream>
 class Rational {
 public:
-  Rational();
-  Rational(int num);
-  Rational(int num, int denom);
+  Rational(int num=0, int denom=1);
 
-	Rational add(const Rational &r) const; //const states the receiver does not change
+	Rational add(const Rational &r) const;
 	Rational &addInPlace(const Rational &r);
   Rational sub(const Rational &r) const;
   Rational &subInPlace(const Rational &r);
@@ -16,15 +14,14 @@ public:
   Rational div(const Rational &r) const;
   Rational &divInPlace(const Rational &r);
 
-
   Rational neg() const;
+  Rational inv() const;
 
-  int getNum(){return num;}
-  int getDenom(){return denom;}
-  Rational getRational(){
-    Rational r(num,denom);
-    return r;
-  }
+  bool equals(const Rational &r) const;
+  int compareTo(const Rational &r) const;
+
+  int getNumerator() const;
+  int getDenominator() const;
 
 	void print(std::ostream &os) const;
 private:
