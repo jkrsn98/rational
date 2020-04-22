@@ -3,7 +3,7 @@
 #include "rational_exception.h"
 
 //------------------------------------------------------------------------------
-//constructor:
+//constructor: (just ONE constructor -- uses default parameters)
 Rational::Rational(int num, int denom):num(num),denom(denom){
   if(denom==0) {
     RationalException r("RationalException: can't instantiate Rational with denom 0");
@@ -60,11 +60,11 @@ Rational& Rational::mulInPlace(const Rational &r){
 //------------------------------------------------------------------------------
 //div & divInPlace:
 Rational Rational::div(const Rational &r) const{
-  return Rational( this->num / (r.num), this->denom / (r.denom) );
+  return Rational( this->num * (r.denom),this->denom * (r.num) );
 }
 Rational& Rational::divInPlace(const Rational &r){
-  this->num /= r.num;
-  this->denom /= r.denom;
+  this->num *= r.denom;
+  this->denom *= r.num;
   return *this;
 }
 //------------------------------------------------------------------------------
