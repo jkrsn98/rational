@@ -5,13 +5,13 @@ class Rational {
 public:
   Rational(int num=0, int denom=1);
 
-	Rational add(const Rational &r) const;
-	Rational &addInPlace(const Rational &r);
-  Rational sub(const Rational &r) const;
+	Rational operator +(const Rational &right);
+  Rational &addInPlace(const Rational &r);
+  Rational operator -(const Rational &right);
   Rational &subInPlace(const Rational &r);
-  Rational mul(const Rational &r) const;
+  Rational operator *(const Rational &right);
   Rational &mulInPlace(const Rational &r);
-  Rational div(const Rational &r) const;
+  Rational operator /(const Rational &right);
   Rational &divInPlace(const Rational &r);
 
   Rational neg() const;
