@@ -25,7 +25,7 @@ int Rational::getDenominator() const {return denom;}
 Rational Rational::operator +(const Rational &a){
   return Rational(num * a.denom + a.num * denom, denom * a.denom);
 }
-Rational& Rational::addInPlace(const Rational &a){
+Rational& Rational::operator +=(const Rational &a){
   int newNum = this->num*a.denom + a.num*this->denom;
   int newDenom = this->denom * a.denom;
   this->num = newNum/gcd(newNum,newDenom);
@@ -38,7 +38,7 @@ Rational& Rational::addInPlace(const Rational &a){
 Rational Rational::operator -(const Rational &a){
   return Rational(num * a.denom - a.num * denom, denom * a.denom);
 }
-Rational& Rational::subInPlace(const Rational &a){
+Rational& Rational::operator -=(const Rational &a){
   int newNum = this->num*a.denom - a.num*this->denom;
   int newDenom = this->denom * a.denom;
   this->num = newNum/gcd(newNum,newDenom);
@@ -51,7 +51,7 @@ Rational& Rational::subInPlace(const Rational &a){
 Rational Rational::operator *(const Rational &r){
   return Rational( this->num * (r.num), this->denom * (r.denom) );
 }
-Rational& Rational::mulInPlace(const Rational &r){
+Rational& Rational::operator *=(const Rational &r){
   this->num *= r.num;
   this->denom *= r.denom;
   return *this;
@@ -62,7 +62,7 @@ Rational& Rational::mulInPlace(const Rational &r){
 Rational Rational::operator /(const Rational &r){
   return Rational( this->num * (r.denom),this->denom * (r.num) );
 }
-Rational& Rational::divInPlace(const Rational &r){
+Rational& Rational::operator /=(const Rational &r){
   this->num *= r.denom;
   this->denom *= r.num;
   return *this;
